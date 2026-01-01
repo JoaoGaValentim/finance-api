@@ -3,6 +3,7 @@ package com.github.joaogavalentim.financeapi.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.joaogavalentim.financeapi.dto.ResponseStructure;
+import com.github.joaogavalentim.financeapi.dto.ResumeResponse;
 import com.github.joaogavalentim.financeapi.models.entities.Finance;
 import com.github.joaogavalentim.financeapi.services.FinanceService;
 
@@ -25,6 +26,11 @@ public class FinanceController {
     @GetMapping("/finance")
     public ResponseStructure<Iterable<Finance>> getAll() {
         return service.getAll();
+    }
+
+    @GetMapping("/finance/resume")
+    public ResponseStructure<ResumeResponse> getResume() {
+        return service.getResume();
     }
 
     @GetMapping("/finance/page/{page}")

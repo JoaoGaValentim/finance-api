@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.github.joaogavalentim.financeapi.dto.ResponseStructure;
+import com.github.joaogavalentim.financeapi.dto.ResumeResponse;
 import com.github.joaogavalentim.financeapi.models.entities.Finance;
+import com.github.joaogavalentim.financeapi.models.entities.enums.TypeFinance;
 import com.github.joaogavalentim.financeapi.models.repositories.FinanceRepository;
 
 @Service
@@ -54,6 +56,21 @@ public class FinanceService {
         response.setMessage("Finances not found");
         response.setStatusCode(HttpStatus.NOT_FOUND.value());
         return response;
+    }
+
+    public ResponseStructure<ResumeResponse> getResume() {
+        double input = financeRepository.getFinanceValueOf(null);
+        double output = financeRepository.getFinanceValueOf(TypeFinance.OUTPUT);
+
+        double actualValue = input > output ? input - output : output - input;
+        ResponseStructure<ResumeResponse> responseStructure = new ResponseStructure<>();
+        ResumeResponse resume = new ResumeResponse(input, actualValue, output);
+
+        responseStructure.setData(resume);
+        responseStructure.setMessage("Success");
+        responseStructure.setStatusCode(HttpStatus.OK.value());
+
+        return responseStructure;
     }
 
     public ResponseStructure<Iterable<Finance>> getAll(int page) {

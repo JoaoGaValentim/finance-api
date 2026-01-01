@@ -23,4 +23,12 @@ public interface FinanceRepository extends JpaRepository<Finance, Long> {
             @Param("description") String description,
             @Param("type") TypeFinance type,
             @Param("value") Double value);
+
+    @Query("SELECT SUM(f.value) FROM finances f WHERE f.type = :type")
+    double getFinanceValueByType(@Param("type") TypeFinance typeFinance);
+
+    default double getFinanceValueOf(@Param("type") TypeFinance typeFinance) {
+        TypeFinance type = typeFinance == null ? TypeFinance.INPUT : TypeFinance.OUTPUT;
+        return getFinanceValueByType(type);
+    }
 }
